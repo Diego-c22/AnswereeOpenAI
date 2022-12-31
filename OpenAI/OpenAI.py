@@ -27,10 +27,6 @@ class OpenAI:
         }
         request = requests.post(
             'https://api.openai.com/v1/completions', json=data, headers=headers)
-        text = request.text
-        print(text)
         data = request.json()
-        print(data)
         answer = data['choices'][0]['text']
-        print(answer)
         return answer

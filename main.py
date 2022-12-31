@@ -5,6 +5,8 @@ from OpenAI.OpenAI import OpenAI
 from SeleniumBrowsers.AnswereeBrowser import Browser
 
 env = environ.Env()
+environ.Env.read_env()
+
 
 OPEN_AI_API_KEY = env('OPEN_AI_API_KEY')
 ANSWEREE_EMAIL = env('ANSWEREE_EMAIL')

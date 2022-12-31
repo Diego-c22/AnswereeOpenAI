@@ -49,7 +49,6 @@ class Browser:
     def load_cookies(self) -> bool:
         try:
             cookies = pickle.load(open('cookies.pkl', 'rb'))
-            print(cookies)
         except:
             return False
         for cookie in cookies:
@@ -72,18 +71,24 @@ class Browser:
 
         question = self.find_element(
             by=By.CSS_SELECTOR, value='.qa-q-view-content > div').text
-        print(question)
+        print("QUESTION:", question)
 
         if not self.click_button(By.ID, 'q_doanswer'):
             return
 
-        answer = openAI.make_request(question, 300, 0, OpenAI.Models.DAVINCI)
+        answer = openAI.make_request(
+            question, 300, 0, OpenAI.Models.DAVINCI)
+        print('ANSWER:', answer)
         time.sleep(2)
         iframe = self.find_element(
             By.CSS_SELECTOR, '.sceditor-container > iframe')
         self.browser.switch_to.frame(iframe)
         self.find_element(By.CSS_SELECTOR, 'body > p').send_keys(answer)
-        time.sleep(2)
+        time.sleep(5)
         self.browser.switch_to.default_content()
         time.sleep(3)
         self.click_button(By.CLASS_NAME, 'qa-form-tall-button-answer')
+        error_text = self.find_element(
+            By.CLASS_NAME, 'qa-form-tall-error').text
+        if error_text and len(error_text) > 0:
+            print(error_text)
